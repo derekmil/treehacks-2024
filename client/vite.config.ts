@@ -4,13 +4,7 @@ import { defineConfig } from "vite";
 import MonacoEditorPlugin from "vite-plugin-monaco-editor";
 
 export default defineConfig({
-  plugins: [
-    react(),
-    MonacoEditorPlugin({
-      // Specify languages to include, and other configurations as needed
-      languages: ["typescript", "javascript"],
-    }),
-  ],
+  plugins: [react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
