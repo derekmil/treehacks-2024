@@ -1,43 +1,35 @@
-"use client";
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import './App.css'
 
-import { useEffect, useRef, useState } from "react";
-import { Button } from "../src/components/ui/button";
-import { ThemeProvider } from "../src/components/theme-provider";
-import { ModeToggle } from "../src/components/mode-toggle"; // Adjust the path as necessary
-import MonacoEditor from "./components/monacoEditor";
+function App() {
+  const [count, setCount] = useState(0)
 
-const value = /* set from `myEditor.getModel()`: */ `function hello() {
-	alert('Hello world!');
-}`;
-
-export default function Home() {
-  const [theme, setTheme] = useState("light");
-  const toggleTheme = () => {
-    setTheme((currentTheme) => (currentTheme === "light" ? "dark" : "light"));
-  };
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <main className="flex min-h-screen flex-col items-center justify-between p-32">
-        <nav className="w-full flex justify-between items-center mb-4">
-          <div className="flex">
-            <h1 className="font-bold text-8xl">AI.DE</h1>
-            <p className="pt-16 pl-5">
-              For the next generation of resume builders and math proof makers.
-            </p>
-          </div>
-          <ModeToggle />
-        </nav>
-        <div className="flex items-center justify-between">
-          <div className="flex w-full h-full rounded-md overflow-hidden">
-            {" "}
-            <MonacoEditor />
-          </div>
-
-          <div>
-            <h1>PDF RENDERERER TO BE CONTINUED</h1>
-          </div>
-        </div>
-      </main>
-    </ThemeProvider>
-  );
+    <>
+      <div>
+        <a href="https://vitejs.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      <h1>Vite + React</h1>
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.tsx</code> and save to test HMR
+        </p>
+      </div>
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
+    </>
+  )
 }
+
+export default App
