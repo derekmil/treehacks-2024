@@ -1,89 +1,76 @@
-import { useRef, useEffect } from "react";
-import * as monaco from "monaco-editor";
+import { useEffect } from "react";
+import Editor, { useMonaco } from "@monaco-editor/react";
 import { useTheme } from "../components/theme-provider"; // Adjust the import path
 
+declare global {
+  interface Window {
+    monaco: typeof import("monaco-editor");
+  }
+}
+
 const MonacoEditor = () => {
-  const editorRef = useRef<HTMLDivElement>(null); // Create a ref for the editor container
   const { theme } = useTheme();
+  const monaco = useMonaco();
+
+  //FUNCTIONALITY FOR AUTO COMPLETE SUGGESTION
+  // So if someone types in \resumeList or whatever we decide and click enter
 
   useEffect(() => {
-    let editor: monaco.editor.IStandaloneCodeEditor | null = null;
+    if (monaco) {
+      // Register a completion item provider for the TypeScript language
+      monaco.languages.registerCompletionItemProvider("typescript", {
+        triggerCharacters: ["/"], // Trigger suggestions on '/'
+        provideCompletionItems: function (model, position) {
+          console.log("Completion provider triggered");
+          const word = model.getWordUntilPosition(position);
+          const range = {
+            startLineNumber: position.lineNumber,
+            endLineNumber: position.lineNumber,
+            startColumn: word.startColumn,
+            endColumn: word.endColumn,
+          };
 
-    // logic regarding the theme
-    const themeFile =
-      theme === "dark" ? "/themes/ghDark.json" : "/themes/ghLight.json";
-    const monacoThemeName = theme === "dark" ? "ghDark" : "ghLight";
+          if (word.word.startsWith("/")) {
+            return {
+              suggestions: [
+                {
+                  label: "/list",
+                  kind: monaco.languages.CompletionItemKind.Snippet,
+                  documentation: "Insert a LaTeX list template",
+                  insertText: [
+                    "\\begin{itemize}",
+                    "  \\item First item",
+                    "  \\item Second item",
+                    "\\end{itemize}",
+                  ].join("\n"),
+                  range: range,
+                },
+                // Additional suggestions can be added here
+              ],
+            };
+          }
 
-    // fetching theme file data
-    fetch(themeFile)
-      .then((response) => response.json())
-      .then((data) => {
-        monaco.editor.defineTheme(monacoThemeName, data);
-        monaco.editor.setTheme(monacoThemeName);
-      })
-      .catch((error) => {
-        console.error("Failed to load the theme:", error);
-      });
-
-    // this is a useRef for describing the editor langauge, but this depends on our monaco editor and might not need
-    if (editorRef.current) {
-      editor = monaco.editor.create(editorRef.current, {
-        value: `function hello() {
-          alert('Hello world!');
-        }`,
-        language: "typescript",
-        automaticLayout: true,
+          return { suggestions: [] };
+        },
       });
     }
+  }, [monaco]);
 
-    //FUNCTIONALITY FOR AUTO COMPLETE SUGGESTION
-    // So if someone types in \resumeList or whatever we decide and click enter
-    monaco.languages.registerCompletionItemProvider("typescript", {
-      triggerCharacters: ["/"], // Trigger suggestions on '/'
-      provideCompletionItems: function (model, position) {
-        console.log("Completion triggered");
-        //this is how much text around the word we should replace
-        const word = model.getWordUntilPosition(position);
-        const range = {
-          startLineNumber: position.lineNumber,
-          endLineNumber: position.lineNumber,
-          startColumn: word.startColumn,
-          endColumn: word.endColumn,
-        };
-
-        if (word.word.startsWith("/")) {
-          return {
-            suggestions: [
-              {
-                label: "/list",
-                kind: monaco.languages.CompletionItemKind.Snippet,
-                documentation: "Insert a LaTeX list template",
-                insertText: [
-                  "\\begin{itemize}",
-                  "  \\item First item",
-                  "  \\item Second item",
-                  "\\end{itemize}",
-                ].join("\n"),
-                range: range,
-              },
-              // You can add more snippets here
-            ],
-          };
-        }
-
-        return { suggestions: [] };
-      },
-    });
-
-    return () => {
-      // Dispose of the editor instance on component unmount (clean up of resources type shit)
-      if (editor) {
-        editor.dispose();
-      }
-    };
-  }, [theme]);
-
-  return <div ref={editorRef} style={{ height: "500px", width: "100%" }} />;
+  return (
+    <Editor
+      height="500px"
+      defaultLanguage="typescript"
+      defaultValue="// some comment"
+      theme={theme === "dark" ? "vs-dark" : "light"} // Use monaco's built-in themes as fallback
+      beforeMount={(monaco) => {
+        // able to  can extend monaco functionalities if needed before mounting the editor
+        // For example, registering completion item providers
+      }}
+      onChange={(value, event) => {
+        // Handle editor changes if necessary
+      }}
+    />
+  );
 };
 
 export default MonacoEditor;
