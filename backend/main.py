@@ -1,21 +1,24 @@
-from fastapi import FastAPI, HTTPException, Depends, Response
+from fastapi import FastAPI, HTTPException, Depends, Response, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 from fastapi.exceptions import HTTPException
 from fastapi.requests import Request
-import sql.models as models
-from sql.database import SessionLocal, engine
+import backend.sql.models as models
+from backend.sql.database import SessionLocal, engine
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from typing import Annotated
-from sql.database import get_db
+from backend.sql.database import get_db
 import firebase_admin
 from firebase_admin import credentials, auth
 from dotenv import load_dotenv
 import os
 import pyrebase
-from api_models import SignUpSchema, LoginSchema, EmailSchema
+from backend.api_models import SignUpSchema, LoginSchema, EmailSchema
 from sqlalchemy.exc import IntegrityError
+import subprocess
+import secrets
+import string
 
 load_dotenv(dotenv_path='.env')
 
@@ -54,6 +57,15 @@ FIREBASE_CONFIG = {
 
 firebase = pyrebase.initialize_app(FIREBASE_CONFIG)
 
+#######################################################
+#                                                     #
+#                        FUNCS                        #
+#                                                     #
+#######################################################
+
+def generate_random_string(length=8):
+    characters = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(characters) for _ in range(length))
 
 
 #######################################################
@@ -63,9 +75,41 @@ firebase = pyrebase.initialize_app(FIREBASE_CONFIG)
 #######################################################
 
 
-@app.get("/render-latex/")
-async def read_item(item_id: int):
-    return {"message": f"yo shit was successful {item_id}"}
+@app.post("/api/render-latex/")
+async def read_item(file: Annotated[bytes, File()]):
+    tag = generate_random_string()
+    root_dir = "/Users/derekmiller/Documents/sideproj/treehacks-2024"
+    render_dir = f"backend/render_dir"
+    os.system(f"rm {render_dir}/*")
+
+    os.makedirs(f"{root_dir}/{render_dir}", exist_ok=True)
+    file_path = os.path.join(f"{root_dir}/{render_dir}", f"{tag}.tex")
+    print('hello')
+    with open(file_path, "wb+") as file_object:
+        file_object.write(file)
+    print('hello')
+
+    try:
+        compile_command = [
+            "docker", "run", "--rm",
+            "-v", f"{root_dir}/{render_dir}:/workdir",
+            "texlive/texlive", "pdflatex",
+            f"{tag}.tex"
+        ]
+        print(compile_command)
+        for i in compile_command:
+            print(i, end=" ")
+
+        result = subprocess.run(compile_command, cwd=f"{root_dir}/{render_dir}/", capture_output=True, text=True)
+        if result.returncode != 0:
+            raise HTTPException(status_code=501, detail=result.stderr)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    response = FileResponse(f"{root_dir}/{render_dir}/{tag}.pdf")
+    
+    return response
+
 
 @app.post('/createaccount/')
 async def create_account(udata: SignUpSchema, db: db_dependency):

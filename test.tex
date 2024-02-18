@@ -1,0 +1,187 @@
+\documentclass[10pt]{article} 
+\usepackage{extsizes}
+\usepackage[utf8]{inputenc}
+\usepackage[left=0.2in,top=0.15in,right=0.15in,bottom=0.2in]{geometry} 
+\usepackage[colorlinks=false]{hyperref} % hyper links color
+\usepackage{enumitem} % spacing in items
+\usepackage[sc]{titlesec} % provide sc font for section 
+\usepackage{color} 
+\usepackage{colortbl}
+\usepackage{xcolor}
+
+\input{glyphtounicode}
+
+\pdfgentounicode=1
+ \usepackage[T1]{fontenc}
+
+
+
+% Remove the word 'Reference' from bibliography
+\usepackage{etoolbox} 
+\patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
+
+\setlist[itemize]{itemsep = 0.2pt}
+\setlist[enumerate]{itemsep = 0.5pt}
+
+%-----------------------------
+%	SECTION FORMATTING
+%-----------------------------
+
+\newcommand{\cussection}[1]{\vspace{-0.3in}\section*{#1}\vspace{-0.15in} \hrule\vspace{0.05in} }
+
+%-----------------------------
+\begin{document}
+% remove page numbers
+\thispagestyle{empty}
+
+\begin{center}
+{\huge{\scshape{Derek Barry Miller}}}
+
+%-------------------------------
+%           Contact Info
+%-------------------------------
+\begin{tabular*} 
+    {\textwidth} 
+        {@{\extracolsep{\fill}}lccr}
+    	&& \\ 
+	    \href{https://www.linkedin.com/in/derek-barry-miller/}{linkedin.com/in/derek-barry-miller}   
+	    &    
+	    \href{mailto://derekmil@umich.edu}{derekmil@umich.edu} 
+	    &
+            \href{te:7817423996}{+1 781-742-396}
+            &
+	    \href{https://github.com/derekmil}{github.com/derekmil}
+                
+	   
+\\
+    
+\arrayrulecolor{gray}
+\hline\hline 
+\end{tabular*} 
+\end{center}
+
+{\centering 
+\par}
+
+%-----------------------------
+%           Education
+%-----------------------------
+
+\cussection{Education}
+\begin{itemize}
+    \item \href{https://cse.engin.umich.edu/}{\textbf{University of Michigan}}, Ann Arbor, MI \hfill 
+    GPA: 3.7/4.0
+    \\ \textit{B.S.E. Computer Science Engineering} \hfill
+    \textit{Aug 2021 - May 2024}
+    
+    \textbf{Relevant Coursework:}  Algorithms, Computer Organization, Web Systems, Linear Alg., Machine Learning, Computer Vision
+      \\ \textbf{Extracurriculars:} optiMize Fellow, MHacks Leadership, Multidisciplinary Design Program, V1 Michigan, IM Soccer
+
+\end{itemize}
+
+
+%---------------------------------
+%           Work Experience
+%--------------------------------- 
+\cussection{Work Experience} 
+
+    \vspace{5pt}
+
+    \begin{itemize} 
+        \item \href{https://www.palantir.com/} {\textbf{Palantir Technologies}}, Washington, DC \hfill May 2024
+    
+    \textit{Incoming Software Engineering Intern -- Forward Deployed}  \hfill \textit{}
+
+        \item \href{https://www.str.us/} {\textbf{STR (Systems Technology Research)}}, Boston, MA \hfill May 2023 -- Present
+    
+    \textit{Software Engineering Intern, Machine Learning Focus}  \hfill \textit{Python, PyTorch, NumPy, Ghidra}
+        \begin{itemize}[topsep=0pt]
+          	\item[$\circ$] Developed audio-visual media aggregation \& search tool for alien file systems by applying NLP methods to file data extraction 
+          	\item[$\circ$]  Reduced content location time by 90\%+ by integrating NL querying to FAISS indices w/ embeddings from CLIP \& BERT
+          	\item[$\circ$]  Improved accuracy of proprietary binary vulnerability detection transformer model by 5\%+ through training modifications such as automated de-weighting of unintentional adversarial data (boilerplate functions) and register lemmatization
+               \item[$\circ$]  Deployed aforementioned code to production on \$10,000,000+ funded defense projects for internal and external use
+                \item[$\circ$]  Currently working part-time to develop multiclass model for specific Common Weakness Enumeration (CWE) prediction
+        \end{itemize}
+    \vspace{2pt}
+    \item \href{https://www.deltadentalmi.com/} {\textbf{Delta Dental Insurance}}, Okemos, MI \hfill Sep 2022 -- Dec 2022
+                  
+      \textit{Software Engineering Intern, RPA Development}  \hfill \textit{UiPath, Agile Software Development}
+
+        \begin{itemize}[topsep=0pt]   
+            \item[$\circ$] Developed autonomous RPA (Robotic Process Automation) .NET Core application bots in UiPath
+            \item[$\circ$] Formulated and implemented licenser information recording bot improvements to decrease bot application run time by over 40\% and improved consistency in existing state machines and workflows run on 10,000+ datapoints monthly
+            \item[$\circ$] In charge of process initiation for automated data collection in 15 states across US, performed duties as full-time student
+        \end{itemize}
+    \vspace{2pt}
+    \item \href{https://www.mhacks.org/} {\textbf{MHacks}}, Ann Arbor, MI \hfill Aug 2023 -- Present
+                  
+      \textit{Sponsorship \& Mentor Coordinator}  \hfill \textit{Project Coordination, CRM, Outreach}
+
+        \begin{itemize}[topsep=0pt]   
+        \item[$\circ$] Coordinating sponsorships and mentors for MHacks 16, UofM's annual hackathon, rebooted this year in-person
+            \item[$\circ$] Secured \$30,000+ from companies such as Google, Uber, Ramp, Capital One, Warp, Qualcomm, Optiver, and more
+            \item[$\circ$] Achieved funding and mentor head count goal, with expected attendees in excess of 500 from top universities across N.A.
+    
+        \end{itemize}	      	
+    \vspace{2pt}
+    \item       \href{https://mdp.engin.umich.edu/research_teams/mapleseed-23/} {\textbf{Mapleseed Robotics Research Team}}, Ann Arbor, MI \hfill Oct 2022 -- Present
+    
+    \textit{Navigation Team Lead (Oct 2023 -- Present) | Research Assistant (Oct 2022 -- Sep 2023)}  \hfill \textit{C++, OpenCV, ROS2}
+    \begin{itemize}[topsep=0pt]  
+        \item[$\circ$] Mapleseed is a University of Michigan research team dedicated to mapping biohazards using autonomous robotics and sensors
+        \item[$\circ$] Formulating methods for autonomous robotic navigation with LIDAR and computer vision in ROS2 for Jetson Nano
+        \item[$\circ$] Elected to lead team of $\sim$10
+ students (Undergrad and Masters) due to demonstration of consistent leadership and drive
+    \end{itemize}
+    
+	      	                 
+\end{itemize}    
+
+%-------------------------------------
+%          Research
+%-------------------------------------
+
+\cussection{Projects}
+\vspace{5pt}
+
+
+\begin{itemize}
+
+    \item \href{https://rent.wine/} {\textbf{rent.wine}}, Ann Arbor, MI \hfill May 2023 -- Present
+
+    \textit{Founder, Sole Proprietor}  \hfill \textit{LLMs, React, Node, Figma, Firebase}
+    \begin{itemize}[topsep=0pt]   
+    \item[$\circ$] Receveied \$7,000 from local incubator to develop web platform that helps inexperienced renters make informed decisions
+     \item[$\circ$] Developed initial prototype with React \& Firebase for an interactive interface, improving capability with Flask and MySQL
+        \item[$\circ$] Exploring GPT-3.5 LLM API for automated lease/legal summarization, and currently aggregating data on landlords
+    \end{itemize}
+    \vspace{2pt}
+
+    
+    \item \textbf{Stereo Depth Mapping with CNNs} \hfill \textit{Python, Convolutional Neural Networks, Keras / Tensorflow} | April 2023
+    \begin{itemize}[topsep=0pt]   
+    \item[$\circ$] Developed U-Net-esque arch with encoding and decoding convolutional layers and ReLU activation for stereo depth estimation
+    \item[$\circ$] Achieved depth estimation with $<20\%$ variance of ground truth with hidden layer reduction and increased epoch count
+    \end{itemize}
+
+    \item \textbf{Optimized Travelling Salesperson Heuristic} \hfill \textit{C++, Graph Algorithms, TSP Heuristics} | Dec 2022
+    \begin{itemize}[topsep=0pt]   
+    \item[$\circ$] Utilized advanced graph theory and a Nearest Insertion heuristic algorithm to optimize Traveling Salesman routes from factorial to quadratic time complexity while maintaining approximation error under 100\% from brute-force solution.
+    \end{itemize}
+
+
+
+\end{itemize}
+%------------------------------
+%           Skills
+%------------------------------
+\cussection{Skills}
+\vspace{5pt}
+
+\begin{tabular}{ l l }
+	Programming Languages, OS: Python, C/C++, JavaScript, LaTeX, SQL, HTML, CSS, Linux, Windows, MacOS \\
+	Frameworks, Libraries, Tools: PyTorch, NumPy, Flask, React, OpenCV, Ghidra, Git, AI/ML, LLMs, REST API, Docker, AWS       \\
+        Spoken Languages: (Fluent): English, (Intermediate): Greek, Spanish \\
+        Other: Active Top Secret Security Clearance -- D.o.D.
+\end{tabular}
+\end{document}
