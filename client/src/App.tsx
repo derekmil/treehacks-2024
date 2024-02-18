@@ -1,6 +1,5 @@
 "use client";
 
-
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -9,6 +8,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import PDFViewer from "@/components/pdf";
 
 import { ScrollBaby } from "@/components/ScrollBaby";
+import {latexTemplate} from '@/components/defaultText';
 
 
 const value = /* set from `myEditor.getModel()`: */ `function hello() {
@@ -17,7 +17,7 @@ const value = /* set from `myEditor.getModel()`: */ `function hello() {
 
 export default function Home() {
   // const [pdfPath, setPdfPath] = useState("");
-  const [editorText, setEditorText] = useState<string>('');
+  const [editorText, setEditorText] = useState<string>("");
   const { isLoading, data } = useQuery({
     queryKey: ['retrieve-latex', editorText],
     queryFn: async () => {
@@ -53,7 +53,7 @@ export default function Home() {
           <MonacoEditor setEditorText={setEditorText} />
           <div className="w-[50vw] flex flex-col justify-between h-[95vh]">
             {!isLoading ?
-              <PDFViewer file={data} />
+                <PDFViewer filePath={data} />
               // <iframe src={data} width="100%" height="500px" style={{ border: 'none' }}></iframe>
               : <div></div>}
             <div className="flex w-full items-center justify-between py-10">
