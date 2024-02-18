@@ -4,12 +4,12 @@ import { pdfjs, Document, Page } from 'react-pdf';
 // Import the worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const PDFViewer = ({ file }: { file: any }) => {
-const [numPages, setNumPages] = useState(0);
+const PDFViewer = ({ file }) => {
+  const [numPages, setNumPages] = useState(null);
 
-function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
+  function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
-}
+  }
 
   return (
     <div>
