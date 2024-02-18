@@ -17,7 +17,7 @@ FastAPI is a modern, fast web framework for building APIs with Python 3.7+ based
    Naviagate to `backend` and run `poetry install` and then `poetry shell`
 
 3. **Run Server**
-   Now, run `uvicorn main:app --reload`
+   Now, in the root dir, run `uvicorn backend.main:app --reload`
 
 
 ## Vite Server Setup

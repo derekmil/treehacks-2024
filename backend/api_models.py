@@ -18,7 +18,8 @@ class EmailSchema(BaseModel):
     email:str
 
 class LatexDocSchema(BaseModel):
-    latex_code:str
-
+    latex: str
+    
 class SearchSchema(BaseModel):
     query:str
+
