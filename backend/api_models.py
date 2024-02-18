@@ -9,6 +9,16 @@ class SignUpSchema(BaseModel):
     password:str
     date_of_birth:date
     gender:str
+    
+class aiSchema(BaseModel):
+    prompt : str
+    model : str
+    max_tokens : int
+    temperature : float
+    top_k : int
+    top_p : float
+    repetition_penalty : float
+    stop : list[str]
 
 class LoginSchema(BaseModel):
     email:str

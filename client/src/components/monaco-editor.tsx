@@ -26,7 +26,7 @@ const MonacoEditor = ({
 
   const handleDebounceText = useCallback(debounce((value: any) => {
     setEditorText(value);
-  }, 1000), []);
+  }, 3000), []);
 
   // useEffect(() => {
   //   handleDebounceText(latexTemplate)
