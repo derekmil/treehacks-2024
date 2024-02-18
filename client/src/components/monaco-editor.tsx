@@ -26,10 +26,15 @@ const MonacoEditor = ({
     setEditorText(value);
   }, 1000), []);
 
+  // useEffect(() => {
+  //   handleDebounceText(latexTemplate)
+  // }, []);
+
   //USEeffect hook for updates
 
   useEffect(() => {
     if (monaco) {
+      
       // Register a completion item provider for the TypeScript language
       monaco.languages.registerCompletionItemProvider("latex", {
         triggerCharacters: ["/"], // Trigger suggestions on '/'
@@ -315,7 +320,7 @@ const MonacoEditor = ({
 
   return (
     <Editor
-      height="792px"
+      className="h-[792px] overflow-auto border-2 border-gray-300 rounded-md"
       defaultLanguage="latex"
       defaultValue={latexTemplate}
       theme={theme === "dark" ? "vs-dark" : "light"} // Use monaco's built-in themes as fallback
