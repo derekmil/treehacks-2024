@@ -86,7 +86,7 @@ export function NavBar() {
     </main>
   )
 }
-
+ 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
   React.ComponentPropsWithoutRef<"a">
