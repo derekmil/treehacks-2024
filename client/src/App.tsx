@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/mode-toggle";
 import MonacoEditor from "@/components/monaco-editor";
 import { useQuery } from "@tanstack/react-query";
 import PDFViewer from "@/components/pdf";
 import {latexTemplate} from '@/components/defaultText';
-
+import { Skeleton } from "@/components/ui/skeleton"
+import {NavBar} from "@/components/navbar";
 import { ScrollBaby } from "@/components/ScrollBaby";
 
 import { useMonaco } from "@monaco-editor/react";
@@ -116,9 +116,10 @@ export default function Home() {
   
 
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <main className="flex min-h-screen flex-col items-center justify-between p-32">
-        <nav className="w-full flex justify-between items-center mb-4">
+      <main className="flex min-h-screen flex-col items-center justify-between px-16">
+        <NavBar />
+        <hr></hr>
+        {/* <nav className="w-full flex justify-between items-center mb-4">
           <div className="flex">
             <h1 className="font-bold text-9xl">AI.DE</h1>
             <p className="pt-24 pl-5">
@@ -126,7 +127,7 @@ export default function Home() {
             </p>
           </div>
           <ModeToggle />
-        </nav>
+        </nav> */}
         <div className="flex items-center justify-between w-full">
           <div className="flex w-full h-full rounded-md overflow-hidden">
             {" "}
@@ -134,25 +135,9 @@ export default function Home() {
           </div>
             {!isLoading ?
                 <PDFViewer filePath={data} />
-              // <iframe src={data} width="100%" height="500px" style={{ border: 'none' }}></iframe>
-              : null}
-        </div>
-        <div className="flex w-full h-full items-center justify-between py-10">
-          <div className="flex flex-col">
-            <div className="z-1 bg-[#e9c7f2] rounded-3xl">
-              <h1 className="text-5xl font-bold z-2 py-2 px-2 text-[#a803d2]">
-                Discover
-              </h1>
-            </div>
-            <h2>See the commands we offer</h2>
-            <ScrollBaby />
-          </div>
-          <div className="flex flex-col">
-            <h1>Search</h1>
-            <h2>Look for what piques your interest</h2>
-          </div>
+              : <Skeleton className="w-8/12 h-[792px] rounded-[10px]" />
+              }
         </div>
       </main>
-    </ThemeProvider>
   );
 }
