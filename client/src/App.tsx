@@ -1,20 +1,42 @@
 "use client";
 
-import { useState } from "react";
+
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ModeToggle } from "@/components/mode-toggle"; // Adjust the path as necessary
+import { ModeToggle } from "@/components/mode-toggle";
 import MonacoEditor from "@/components/monaco-editor";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import PDFViewer from "@/components/pdf";
+
 import { ScrollBaby } from "@/components/ScrollBaby";
 
+
 const value = /* set from `myEditor.getModel()`: */ `function hello() {
-	alert('Hello world!');
+  alert('Hello world!');
 }`;
 
 export default function Home() {
-  const [theme, setTheme] = useState("light");
-  const toggleTheme = () => {
-    setTheme((currentTheme) => (currentTheme === "light" ? "dark" : "light"));
-  };
+  // const [pdfPath, setPdfPath] = useState("");
+  const [editorText, setEditorText] = useState<string>('');
+  const { isLoading, data } = useQuery({
+    queryKey: ['retrieve-latex', editorText],
+    queryFn: async () => {
+      const latexContent = editorText.replace(/\\/g, '\\\\');
+
+      const response = await fetch('http://localhost:8000/api/render-latex/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ latex: latexContent }),
+      });
+      let data = await response.blob();
+      const url = URL.createObjectURL(data);
+      return url;
+    },
+    enabled: !!editorText, // This ensures the query doesn't run until editorText is not empty
+  });
+
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <main className="flex min-h-screen flex-col items-center justify-between p-32">
@@ -30,11 +52,14 @@ export default function Home() {
         <div className="flex items-center justify-between">
           <div className="flex w-full h-full rounded-md overflow-hidden">
             {" "}
-            <MonacoEditor />
+            <MonacoEditor setEditorText={setEditorText} />
           </div>
 
           <div>
-            <h1>PDF RENDERERER TO BE CONTINUED</h1>
+            {!isLoading ?
+              <PDFViewer file={data} />
+              // <iframe src={data} width="100%" height="500px" style={{ border: 'none' }}></iframe>
+              : null}
           </div>
         </div>
         <div className="flex w-full h-full items-center justify-between py-10">

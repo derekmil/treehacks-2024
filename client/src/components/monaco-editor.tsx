@@ -1,6 +1,9 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Editor, { useMonaco } from "@monaco-editor/react";
 import { useTheme } from "../components/theme-provider"; // Adjust the import path
+
+import debounce from 'lodash/debounce';
+
 import { setupLanguage } from "@/lib/latex/setup";
 import { keywords } from "@/lib/latex/latex";
 
@@ -10,12 +13,17 @@ declare global {
   }
 }
 
-const MonacoEditor = () => {
+const MonacoEditor = ({
+  setEditorText,
+}: {
+  setEditorText: (path: string) => void;
+}) => {
   const { theme } = useTheme();
   const monaco = useMonaco();
 
-  //FUNCTIONALITY FOR AUTO COMPLETE SUGGESTION
-  // So if someone types in \resumeList or whatever we decide and click enter
+  const handleDebounceText = useCallback(debounce((value: any) => {
+    setEditorText(value);
+  }, 1000), []);
 
   //USEeffect hook for updates
 
@@ -299,6 +307,8 @@ const MonacoEditor = () => {
       }
     }
   }, [monaco]);
+  //FUNCTIONALITY FOR AUTO COMPLETE SUGGESTION
+  // So if someone types in \resumeList or whatever we decide and click enter
 
   // Create or configure the editor instance
 
@@ -313,9 +323,7 @@ const MonacoEditor = () => {
         // able to  can extend monaco functionalities if needed before mounting the editor
         // For example, registering completion item providers
       }}
-      onChange={(value, event) => {
-        // Handle editor changes if necessary
-      }}
+      onChange={(value) => handleDebounceText(value!)}
     />
   );
 };
