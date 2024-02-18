@@ -13,6 +13,8 @@ export const latexTemplate = `
 % Package for extended graphics
 \\usepackage{graphicx}
 
+% Package for better control over margins
+\\usepackage[margin=1in]{geometry}
 
 % Package for hyperlinks
 \\usepackage{hyperref}
