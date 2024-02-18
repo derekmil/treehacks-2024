@@ -1,11 +1,15 @@
 "use client";
 
+
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ModeToggle } from "@/components/mode-toggle"; // Adjust the path as necessary
+import { ModeToggle } from "@/components/mode-toggle";
 import MonacoEditor from "@/components/monaco-editor";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import PDFViewer from "@/components/pdf";
+
+import { ScrollBaby } from "@/components/ScrollBaby";
+
 
 const value = /* set from `myEditor.getModel()`: */ `function hello() {
   alert('Hello world!');
@@ -38,8 +42,8 @@ export default function Home() {
       <main className="flex min-h-screen flex-col items-center justify-between p-32">
         <nav className="w-full flex justify-between items-center mb-4">
           <div className="flex">
-            <h1 className="font-bold text-8xl">AI.DE</h1>
-            <p className="pt-16 pl-5">
+            <h1 className="font-bold text-9xl">AI.DE</h1>
+            <p className="pt-24 pl-5">
               For the next generation of resume builders and math proof makers.
             </p>
           </div>
@@ -56,6 +60,21 @@ export default function Home() {
               <PDFViewer file={data} />
               // <iframe src={data} width="100%" height="500px" style={{ border: 'none' }}></iframe>
               : null}
+          </div>
+        </div>
+        <div className="flex w-full h-full items-center justify-between py-10">
+          <div className="flex flex-col">
+            <div className="z-1 bg-[#e9c7f2] rounded-3xl">
+              <h1 className="text-5xl font-bold z-2 py-2 px-2 text-[#a803d2]">
+                Discover
+              </h1>
+            </div>
+            <h2>See the commands we offer</h2>
+            <ScrollBaby />
+          </div>
+          <div className="flex flex-col">
+            <h1>Search</h1>
+            <h2>Look for what piques your interest</h2>
           </div>
         </div>
       </main>
