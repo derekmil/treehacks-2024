@@ -1,6 +1,4 @@
-import * as React from "react";
 import data from "../assets/data.js"; // Adjust the import path to your JSON file
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import Box from "./Box";
 
@@ -13,12 +11,12 @@ import Box from "./Box";
 
 export function ScrollBaby() {
   return (
-    <ScrollArea className="h-72 w-full rounded-md border">
-      <div className="p-4">
-        <h4 className="mb-4 text-sm font-medium leading-none">LEGEND</h4>
-        {data.map((item) => {
+    <div className="w-[50vw] rounded-md border p-4">
+      <h4 className="mb-4 text-sm font-medium leading-none">LEGEND</h4>
+      <div className="w-full flex flex-row flex-wrap">
+        {data.map((item: any) => {
           return (
-            <React.Fragment key={item.id}>
+            <div key={item.id} className="w-1/2">
               {/* Render the icon component directly if it exists */}
               <div className="icon-container">
                 {/* Render the icon component directly */}
@@ -26,11 +24,11 @@ export function ScrollBaby() {
               </div>{" "}
               <Box name={item.name} latex={item.latex} />
               <Separator className="my-2" />
-            </React.Fragment>
+            </div>
           );
         })}
       </div>
-    </ScrollArea>
+    </div>
   );
 }
 
