@@ -84,10 +84,8 @@ async def read_item(file: Annotated[bytes, File()]):
 
     os.makedirs(f"{root_dir}/{render_dir}", exist_ok=True)
     file_path = os.path.join(f"{root_dir}/{render_dir}", f"{tag}.tex")
-    print('hello')
     with open(file_path, "wb+") as file_object:
         file_object.write(file)
-    print('hello')
 
     try:
         compile_command = [
@@ -96,9 +94,6 @@ async def read_item(file: Annotated[bytes, File()]):
             "texlive/texlive", "pdflatex",
             f"{tag}.tex"
         ]
-        print(compile_command)
-        for i in compile_command:
-            print(i, end=" ")
 
         result = subprocess.run(compile_command, cwd=f"{root_dir}/{render_dir}/", capture_output=True, text=True)
         if result.returncode != 0:
@@ -113,8 +108,6 @@ async def read_item(file: Annotated[bytes, File()]):
 
 @app.post('/createaccount/')
 async def create_account(udata: SignUpSchema, db: db_dependency):
-    print("hello")
-
     try:
         if db.query(models.Users).filter(models.Users.email == udata.email).first() is not None:
             raise IntegrityError
