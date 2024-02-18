@@ -36,7 +36,7 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=['*'],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -99,7 +99,6 @@ async def render_latex(request: LatexDocSchema):
         result = subprocess.run(compile_command, cwd=f"{root_dir}/{render_dir}/", capture_output=True, text=True)
         if result.returncode != 0:
             raise HTTPException(status_code=501, detail=result.stderr)
-# docker run --rm -v /Users/derekmiller/Documents/sideproj/treehacks-2024/backend/render_dir:/workdir texlive/texlive pdflatex test.tex
 
     except Exception as e:
         print("something", e)
