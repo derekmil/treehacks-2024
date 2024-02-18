@@ -17,6 +17,7 @@ import pyrebase
 from api_models import SignUpSchema, LoginSchema, EmailSchema
 from sqlalchemy.exc import IntegrityError
 
+
 load_dotenv(dotenv_path='.env')
 
 
