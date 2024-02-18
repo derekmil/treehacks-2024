@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Editor, { useMonaco } from "@monaco-editor/react";
 import { useTheme } from "../components/theme-provider"; // Adjust the import path
 import { setupLanguage } from "@/lib/latex/setup";
+import { keywords } from "@/lib/latex/latex";
 
 declare global {
   interface Window {
@@ -19,10 +20,9 @@ const MonacoEditor = () => {
   useEffect(() => {
     if (monaco) {
       // Register a completion item provider for the TypeScript language
-      monaco.languages.registerCompletionItemProvider("typescript", {
+      monaco.languages.registerCompletionItemProvider("latex", {
         triggerCharacters: ["/"], // Trigger suggestions on '/'
         provideCompletionItems: function (model: any, position: any) {
-          console.log("Completion provider triggered");
           const word = model.getWordUntilPosition(position);
           const range = {
             startLineNumber: position.lineNumber,
@@ -31,27 +31,44 @@ const MonacoEditor = () => {
             endColumn: word.endColumn,
           };
 
-          if (word.word.startsWith("/")) {
-            return {
-              suggestions: [
-                {
-                  label: "/list",
-                  kind: monaco.languages.CompletionItemKind.Snippet,
-                  documentation: "Insert a LaTeX list template",
-                  insertText: [
-                    "\\begin{itemize}",
-                    "  \\item First item",
-                    "  \\item Second item",
-                    "\\end{itemize}",
-                  ].join("\n"),
-                  range: range,
-                },
-                // Additional suggestions can be added here
-              ],
-            };
-          }
+          return {
+            suggestions: [
+              {
+                label: "/list",
+                kind: monaco.languages.CompletionItemKind.Snippet,
+                documentation: "Insert a LaTeX list template",
+                insertText: [
+                  "\\begin{itemize}",
+                  "  \\item First item",
+                  "  \\item Second item",
+                  "\\end{itemize}",
+                ].join("\n"),
+                range: range,
+              },
+            ],
+          };
+        },
+      });
 
-          return { suggestions: [] };
+      monaco.languages.registerCompletionItemProvider("latex", {
+        triggerCharacters: ["\\"], // Trigger suggestions on '/'
+        provideCompletionItems: function (model: any, position: any) {
+          const word = model.getWordUntilPosition(position);
+          const range = {
+            startLineNumber: position.lineNumber,
+            endLineNumber: position.lineNumber,
+            startColumn: word.startColumn,
+            endColumn: word.endColumn,
+          };
+
+          return {
+            suggestions: keywords.filter(w => w.startsWith(word.word)).map((label) => ({
+              label,
+              kind: monaco.languages.CompletionItemKind.Keyword,
+              insertText: label,
+              range,
+            }))
+          };
         },
       });
     }
