@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import Editor, { useMonaco } from "@monaco-editor/react";
 import { useTheme } from "../components/theme-provider"; // Adjust the import path
+import { setupLanguage } from "@/lib/latex/setup";
 
 declare global {
   interface Window {
-    monaco: typeof import("monaco-editor");
+    monaco: typeof import("monaco-editor-core");
   }
 }
 
@@ -20,7 +21,7 @@ const MonacoEditor = () => {
       // Register a completion item provider for the TypeScript language
       monaco.languages.registerCompletionItemProvider("typescript", {
         triggerCharacters: ["/"], // Trigger suggestions on '/'
-        provideCompletionItems: function (model, position) {
+        provideCompletionItems: function (model: any, position: any) {
           console.log("Completion provider triggered");
           const word = model.getWordUntilPosition(position);
           const range = {
@@ -59,10 +60,11 @@ const MonacoEditor = () => {
   return (
     <Editor
       height="500px"
-      defaultLanguage="typescript"
-      defaultValue="// some comment"
+      defaultLanguage="latex"
+      defaultValue="\textbf{hello}"
       theme={theme === "dark" ? "vs-dark" : "light"} // Use monaco's built-in themes as fallback
       beforeMount={(monaco) => {
+        setupLanguage(monaco);
         // able to  can extend monaco functionalities if needed before mounting the editor
         // For example, registering completion item providers
       }}
