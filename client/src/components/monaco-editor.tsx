@@ -22,7 +22,7 @@ const MonacoEditor = ({
   setEditorText: (path: string) => void;
 }) => {
   const { theme } = useTheme();
-  var monaco = useMonaco();
+  const monaco = useMonaco();
 
   const handleDebounceText = useCallback(debounce((value: any) => {
     setEditorText(value);
@@ -322,7 +322,8 @@ const MonacoEditor = ({
 
   return (
     <Editor
-      className="h-[792px] overflow-auto border-2 border-gray-300 rounded-md"
+      height="95vh"
+      width="50vw"
       defaultLanguage="latex"
       defaultValue={latexTemplate}
       theme={theme === "dark" ? "vs-dark" : "light"} // Use monaco's built-in themes as fallback
