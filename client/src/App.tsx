@@ -6,12 +6,13 @@ import { ModeToggle } from "@/components/mode-toggle";
 import MonacoEditor from "@/components/monaco-editor";
 import { useQuery } from "@tanstack/react-query";
 import PDFViewer from "@/components/pdf";
-import { latexTemplate } from '@/components/defaultText';
+import {latexTemplate} from '@/components/defaultText';
 
 import { ScrollBaby } from "@/components/ScrollBaby";
 
 import { useMonaco } from "@monaco-editor/react";
 import AutocompleteService from "./lib/service/AutocompleteService";
+import { text } from "stream/consumers";
 
 const value = /* set from `myEditor.getModel()`: */ `function hello() {
   alert('Hello world!');
@@ -42,9 +43,11 @@ export default function Home() {
     },
     enabled: !!editorText, // This ensures the query doesn't run until editorText is not empty
   });
-  const [currentPrompt, setCurrentPrompt] = useState<string>('');
 
-  useEffect(() => {
+  const [currentPrompt, setCurrentPrompt] = useState<string>('');
+  
+  
+  useEffect(() => { 
     (async () => {
       const keyword = "/ai";
 
@@ -58,8 +61,8 @@ export default function Home() {
           // Get the content of the line
           const lineContent = lines[lineIndex];
           console.log("Line containing keyword:", lineContent);
-          const newEditorText = editorText.replace(keyword, "Submitted");
-          console.log("Editor text:", newEditorText);
+          let newEditorText = editorText.replace(keyword, "Submitted");
+          // console.log("Editor text:", newEditorText);
           setEditorText(newEditorText);
 
           var currentEditor = monaco?.editor.getModels()[0];
@@ -73,46 +76,44 @@ export default function Home() {
 
 
             //call ai_complete api
-            const prompt = lineContent.replace(/\%|ai/g, '');
+            const prompt = lineContent.replace(/\%|\/ai/g, '');
             setCurrentPrompt(prompt);
             const completion = await AutocompleteService.getPromptResponse(prompt);
 
             // Assuming `monaco` is the global object for the Monaco Editor API
             // and `editor` is your Monaco Editor instance
-            if (monaco) {
-              monaco.languages.registerCompletionItemProvider('latex', {
-                
-                provideCompletionItems: function(model, position) {
-                    // find word at cursor position
-                    var word = model.getWordAtPosition(position);
+            console.log("completion", completion["text"]);
+            //const parsed = completion as { text: string };
+            const keyword = "Submitted"
+            const lines = newEditorText.split("\n");
+            const lineIndex = lines.findIndex(line => line.includes(keyword));
+            console.log("lineIndex", lineIndex);
+            // Get the content of the last line
+            if (lineIndex !== -1) { // Check if keyword is found
+              // Get the content of the line
+              const lineContent = lines[lineIndex];
+              console.log("Line containing keyword:", lineContent);
+              console.log(editorText)
+              const texty = newEditorText.replace("Submitted", "\n" + completion["text"])
+              setEditorText(texty);
+              //console.log("Editor text:", newEditorText);
+              // setEditorText(newEditorText);
 
-                    
-                    var range = {
-                      startLineNumber: position.lineNumber,
-                      endLineNumber: position.lineNumber,
-                      startColumn: word ? word.startColumn : position.column,
-                      endColumn: word ? word.endColumn : position.column
-                    };
-                    
-                  
-                    return {
-                        suggestions: [{
-                            label: 'MyCompletion',
-                            kind: monaco.languages.CompletionItemKind.Function,
-                            documentation: 'This is a custom completion item',
-                            insertText: completion.content,
-                            range: range
-                        }]
-                    };
-                }
-              });       
-            }
+              var currentEditor = monaco?.editor.getModels()[0];
+              if (currentEditor) {
+                const editOperation = {
+                  range: currentEditor.getFullModelRange(),
+                  text: texty,
+                  forceMoveMarkers: true,
+                };
+                currentEditor.applyEdits([editOperation]);
           }
-        }
+        }}}
       }
     })();
   }, [editorText]);
 
+  
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -129,12 +130,12 @@ export default function Home() {
         <div className="flex items-center justify-between w-full">
           <div className="flex w-full h-full rounded-md overflow-hidden">
             {" "}
-            <MonacoEditor editorText={editorText} setEditorText={setEditorText} />
+            <MonacoEditor editorText = {editorText} setEditorText={setEditorText} />
           </div>
-          {!isLoading ?
-            <PDFViewer filePath={data} />
-            // <iframe src={data} width="100%" height="500px" style={{ border: 'none' }}></iframe>
-            : null}
+            {!isLoading ?
+                <PDFViewer filePath={data} />
+              // <iframe src={data} width="100%" height="500px" style={{ border: 'none' }}></iframe>
+              : null}
         </div>
         <div className="flex w-full h-full items-center justify-between py-10">
           <div className="flex flex-col">

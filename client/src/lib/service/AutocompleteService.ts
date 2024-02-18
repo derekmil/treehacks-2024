@@ -1,6 +1,3 @@
-
-
-
 export default class AutocompleteService {
     static async getPromptResponse(prompt: string) {
         console.log("Prompt:", prompt);
@@ -12,7 +9,6 @@ export default class AutocompleteService {
             },
             body: JSON.stringify({ prompt }),
         });
-
-        return await response.json() as { content: string };
+        return await response.json() as { text: string };
     }
 }

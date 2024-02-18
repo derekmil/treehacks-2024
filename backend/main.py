@@ -14,15 +14,12 @@ from firebase_admin import credentials, auth
 from dotenv import load_dotenv
 import os
 # import pyrebase
-
 from backend.api_models import SignUpSchema, LoginSchema, EmailSchema, LatexDocSchema, aiSchema
-
 from sqlalchemy.exc import IntegrityError
 import subprocess
 import secrets
 import string
 import together
-
 
 load_dotenv(dotenv_path='.env')
 
@@ -35,7 +32,6 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 origins = [
     "http://localhost:5173",
-    "*"
 ]
 
 app.add_middleware(
@@ -44,7 +40,6 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-
 )
 
 if not firebase_admin._apps:
@@ -83,16 +78,16 @@ def generate_random_string(length=8):
 @app.post('/ai/')
 async def ai_complete(request: aiSchema):
     print("here")
-    
+
     together.api_key = "100d954a690d242c16700cd8efb3c830592b37edc5423095192020e1d6724f03"
-    
+
     systemMessage = "[INST]  You are a copilot tool to help users write latex syntax. I need you to only respond in latex code if you write an english word you will be punished. You are given an input which is a comment given by the user. Assume the the latex framework is in place.\n Response: {one line of latex code} "
     prompt = request.prompt
 
     question = systemMessage + prompt
 
     question += "\n [/INST]"
-    
+
     print("prompt", question)
 
     output = together.Complete.create(
@@ -105,7 +100,7 @@ async def ai_complete(request: aiSchema):
     repetition_penalty = 1,
     stop = ['</s>,[INST]']
     )
-    
+
     return JSONResponse(
         content={
             "text": output['output']['choices'][0]['text'] 
@@ -113,16 +108,15 @@ async def ai_complete(request: aiSchema):
         status_code=200
     )
 
-
 @app.post("/api/render-latex/")
 async def render_latex(request: LatexDocSchema):
     latex = request.latex
     unsanitized_latex_content = latex.replace('\\\\', '\\')
 
     tag = generate_random_string()
-    root_dir = "/Users/wdevoest/Documents/treehacks-2024"
+    root_dir = "/Users/derekmiller/Documents/sideproj/treehacks-2024"
     render_dir = f"backend/render_dir"
-    os.system(f"rm {render_dir}/*")
+    # os.system(f"rm {render_dir}/*")
 
     os.makedirs(f"{root_dir}/{render_dir}", exist_ok=True)
     file_path = os.path.join(f"{root_dir}/{render_dir}", f"{tag}.tex")
