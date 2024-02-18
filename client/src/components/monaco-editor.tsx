@@ -22,7 +22,7 @@ const MonacoEditor = ({
   setEditorText: (path: string) => void;
 }) => {
   const { theme } = useTheme();
-  var monaco = useMonaco();
+  const monaco = useMonaco();
 
   const handleDebounceText = useCallback(debounce((value: any) => {
     setEditorText(value);
