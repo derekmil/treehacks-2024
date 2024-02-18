@@ -82,7 +82,7 @@ export default function Home() {
             </div>
           </div>
         </nav>
-        <div className="flex items-center justify-between w-full">
+        <div className="flex flex-row items-center justify-between w-full">
           <div className="flex w-full h-full rounded-md overflow-hidden">
             {" "}
             <MonacoEditor
@@ -90,11 +90,11 @@ export default function Home() {
               setEditorText={setEditorText}
             />
           </div>
-          {!isLoading ?
-            <PDFViewer filePath={data} />
-            // <iframe src={data} width="100%" height="500px" style={{ border: 'none' }}></iframe>
-            : <div></div>}
-          <div className="flex w-full items-center justify-between py-10">
+          <div className="flex flex=col w-full items-center justify-between py-10">
+            {!isLoading ?
+              <PDFViewer filePath={data} />
+              // <iframe src={data} width="100%" height="500px" style={{ border: 'none' }}></iframe>
+              : <div></div>}
             <ScrollBaby />
           </div>
         </div>
