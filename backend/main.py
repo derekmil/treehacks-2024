@@ -14,7 +14,9 @@ from firebase_admin import credentials, auth
 from dotenv import load_dotenv
 import os
 # import pyrebase
+
 from backend.api_models import SignUpSchema, LoginSchema, EmailSchema, LatexDocSchema, aiSchema
+
 from sqlalchemy.exc import IntegrityError
 import subprocess
 import secrets
