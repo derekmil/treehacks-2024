@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "icon": "ampersand",
+    "name": "L-And",
+    "description": "Description for item 1",
+    "clip": "Description for item 1"
+  },
+  {
+    "id": 2,
+    "icon": "circle_slash",
+    "name": "L-Or",
+    "description": "Description for item 2",
+    "clip": "Description for item 1"
+  },
+  {
+    "id": 3,
+    "icon": "scale",
+    "name": "DeMorgan's Law",
+    "description": "Description for item 3",
+    "clip": "Description for item 1"
+  },
+  {
+    "id": 3,
+    "icon": "scale",
+    "name": "Set Union",
+    "description": "Description for item 3",
+    "clip": "Description for item 1"
+  },
+  {
+    "id": 3,
+    "icon": "scale",
+    "name": "Set Middle",
+    "description": "Description for item 3",
+    "clip": "Description for item 1"
+  },
+  {
+    "id": 3,
+    "icon": "scale",
+    "name": "Bar",
+    "description": "Description for item 3",
+    "clip": "Description for item 1"
+  }
+]

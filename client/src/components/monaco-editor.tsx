@@ -103,6 +103,18 @@ const MonacoEditor = () => {
               detail: "Insert Summation",
             },
             {
+              label: "implies",
+              kind: monaco.languages.CompletionItemKind.Snippet,
+              insertText: "\\leftrightarrow",
+              detail: "Implies",
+            },
+            {
+              label: "iff",
+              kind: monaco.languages.CompletionItemKind.Snippet,
+              insertText: "\\rightarrow",
+              detail: "If and only iff",
+            },
+            {
               label: "uni",
               kind: monaco.languages.CompletionItemKind.Method,
               insertText: "\\cup",
