@@ -6,6 +6,7 @@ import debounce from 'lodash/debounce';
 
 import { setupLanguage } from "@/lib/latex/setup";
 import { keywords } from "@/lib/latex/latex";
+import {latexTemplate} from '../components/defaultText';
 
 declare global {
   interface Window {
@@ -316,7 +317,7 @@ const MonacoEditor = ({
     <Editor
       height="500px"
       defaultLanguage="latex"
-      defaultValue="\textbf{hello}"
+      defaultValue={latexTemplate}
       theme={theme === "dark" ? "vs-dark" : "light"} // Use monaco's built-in themes as fallback
       beforeMount={(monaco) => {
         setupLanguage(monaco);
