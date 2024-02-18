@@ -112,7 +112,7 @@ const MonacoEditor = () => {
               label: "iff",
               kind: monaco.languages.CompletionItemKind.Snippet,
               insertText: "\\rightarrow",
-              detail: "If and only iff",
+              detail: "If and only if",
             },
             {
               label: "uni",
