@@ -14,12 +14,14 @@ declare global {
 }
 
 const MonacoEditor = ({
+  editorText,
   setEditorText,
 }: {
+  editorText: string;
   setEditorText: (path: string) => void;
 }) => {
   const { theme } = useTheme();
-  const monaco = useMonaco();
+  var monaco = useMonaco();
 
   const handleDebounceText = useCallback(debounce((value: any) => {
     setEditorText(value);
@@ -323,6 +325,7 @@ const MonacoEditor = ({
         // able to  can extend monaco functionalities if needed before mounting the editor
         // For example, registering completion item providers
       }}
+      value={editorText}
       onChange={(value) => handleDebounceText(value!)}
     />
   );
