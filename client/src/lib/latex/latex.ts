@@ -11,6 +11,7 @@ export const monarchLanguage: ILanguage = {
     tokenizer: {
         root: [
             [/(\\[a-zA-Z]+\*?)(\{)/, ["keyword", "delimiter.bracket"]],
+            [/(\\[a-zA-Z]+\*?)/, ["keyword"]],
         ]
     },
 }
