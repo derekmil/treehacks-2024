@@ -1,6 +1,5 @@
 "use client";
 
-
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -11,8 +10,12 @@ import PDFViewer from "@/components/pdf";
 
 
 import { ScrollBaby } from "@/components/ScrollBaby";
+
 import  editor from "monaco-editor";
 import { useMonaco } from "@monaco-editor/react";
+
+import {latexTemplate} from '@/components/defaultText';
+
 
 
 const value = /* set from `myEditor.getModel()`: */ `function hello() {
@@ -21,8 +24,12 @@ const value = /* set from `myEditor.getModel()`: */ `function hello() {
 
 export default function Home() {
   // const [pdfPath, setPdfPath] = useState("");
+
   const monaco = useMonaco();
   const [editorText, setEditorText] = useState<string>('');
+=======
+  const [editorText, setEditorText] = useState<string>("");
+
   const { isLoading, data } = useQuery({
     queryKey: ['retrieve-latex', editorText],
     queryFn: async () => {
@@ -90,7 +97,7 @@ export default function Home() {
           </div>
           <ModeToggle />
         </nav>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between w-full">
           <div className="flex w-full h-full rounded-md overflow-hidden">
             {" "}
             <MonacoEditor
@@ -98,13 +105,10 @@ export default function Home() {
               setEditorText={setEditorText}
             />
           </div>
-
-          <div>
             {!isLoading ?
-              <PDFViewer file={data} />
+                <PDFViewer filePath={data} />
               // <iframe src={data} width="100%" height="500px" style={{ border: 'none' }}></iframe>
               : null}
-          </div>
         </div>
         <div className="flex w-full h-full items-center justify-between py-10">
           <div className="flex flex-col">

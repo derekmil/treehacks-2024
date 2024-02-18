@@ -1,33 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { pdfjs, Document, Page } from 'react-pdf';
+import React, { useState } from 'react';
+import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import "react-pdf/dist/esm/Page/TextLayer.css";
+import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 
-// Import the worker
+// You might need to specify the workerSrc to avoid issues in certain setups
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const PDFViewer = ({ file }: { file: any }) => {
-const [numPages, setNumPages] = useState(0);
+const PDFViewer = ({ filePath }: {filePath: string | undefined}) => {
+  const [numPages, setNumPages] = useState(0);
 
-function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
+  function onDocumentLoadSuccess({ numPages } : {numPages: number}) {
     setNumPages(numPages);
-}
+  }
 
   return (
-    <div>
       <Document
-        file={file}
+        file={filePath}
         onLoadSuccess={onDocumentLoadSuccess}
+        className={"flex-col w-[1300px] h-[792px] overflow-auto border-2 border-gray-300 rounded-md"}
       >
-        {Array.from(
-          new Array(numPages),
-          (el, index) => (
-            <Page
-              key={`page_${index + 1}`}
-              pageNumber={index + 1}
-            />
-          ),
-        )}
+        {Array.from(new Array(numPages), (el, index) => (
+          <Page key={`page_${index + 1}`} pageNumber={index + 1} renderTextLayer={false}/>
+        ))}
       </Document>
-    </div>
   );
 };
 
