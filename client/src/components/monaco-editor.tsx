@@ -28,10 +28,15 @@ const MonacoEditor = ({
     setEditorText(value);
   }, 1000), []);
 
+  // useEffect(() => {
+  //   handleDebounceText(latexTemplate)
+  // }, []);
+
   //USEeffect hook for updates
 
   useEffect(() => {
     if (monaco) {
+      
       // Register a completion item provider for the TypeScript language
       monaco.languages.registerCompletionItemProvider("latex", {
         triggerCharacters: ["/"], // Trigger suggestions on '/'

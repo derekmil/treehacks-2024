@@ -13,8 +13,22 @@ const PDFViewer = ({ filePath }: {filePath: string | undefined}) => {
   function onDocumentLoadSuccess({ numPages } : {numPages: number}) {
     setNumPages(numPages);
   }
-
-  return (
+  const starterPath = "../../public/starter.pdf"
+  
+  if (!filePath) {
+    return (
+      <Document
+        file={starterPath}
+        onLoadSuccess={onDocumentLoadSuccess}
+        className={"flex-col w-[1300px] h-[792px] overflow-auto border-2 border-gray-300 rounded-md"}
+      >
+        {Array.from(new Array(numPages), (el, index) => (
+          <Page key={`page_${index + 1}`} pageNumber={index + 1} renderTextLayer={false}/>
+        ))}
+      </Document>
+      )
+  } else {
+    return (
       <Document
         file={filePath}
         onLoadSuccess={onDocumentLoadSuccess}
@@ -24,7 +38,10 @@ const PDFViewer = ({ filePath }: {filePath: string | undefined}) => {
           <Page key={`page_${index + 1}`} pageNumber={index + 1} renderTextLayer={false}/>
         ))}
       </Document>
-  );
+    )
+
+  }
+
 };
 
 export default PDFViewer;
