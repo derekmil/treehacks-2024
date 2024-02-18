@@ -13,7 +13,7 @@ import firebase_admin
 from firebase_admin import credentials, auth
 from dotenv import load_dotenv
 import os
-import pyrebase
+# import pyrebase
 from backend.api_models import SignUpSchema, LoginSchema, EmailSchema, LatexDocSchema
 from sqlalchemy.exc import IntegrityError
 import subprocess
@@ -56,7 +56,7 @@ FIREBASE_CONFIG = {
     "databaseURL": os.getenv('FIREBASE_DATABASEURL')
 }
 
-firebase = pyrebase.initialize_app(FIREBASE_CONFIG)
+# firebase = pyrebase.initialize_app(FIREBASE_CONFIG)
 
 #######################################################
 #                                                     #
