@@ -16,7 +16,7 @@ export function ScrollBaby() {
       <div className="w-full flex flex-row flex-wrap">
         {data.map((item: any) => {
           return (
-            <div key={item.id} className="w-1/2">
+            <div key={item.id} className="w-1/2 p-2">
               {/* Render the icon component directly if it exists */}
               <div className="icon-container">
                 {/* Render the icon component directly */}

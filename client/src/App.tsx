@@ -7,13 +7,13 @@ import MonacoEditor from "@/components/monaco-editor";
 import { useQuery } from "@tanstack/react-query";
 import PDFViewer from "@/components/pdf";
 import {latexTemplate} from '@/components/defaultText';
-
+import { NavBar } from "@/components/NavBar";
 import { ScrollBaby } from "@/components/ScrollBaby";
 
 import { useMonaco } from "@monaco-editor/react";
 import AutocompleteService from "./lib/service/AutocompleteService";
 import { text } from "stream/consumers";
-
+import { Skeleton } from "@/components/ui/skeleton";
 const value = /* set from `myEditor.getModel()`: */ `function hello() {
   alert('Hello world!');
 }`;
@@ -46,6 +46,11 @@ export default function Home() {
 
   const [currentPrompt, setCurrentPrompt] = useState<string>('');
   
+  useEffect(() => {
+    if (!data) return;
+    setLastPDF(data!);
+  } , [data]);
+
   
   useEffect(() => { 
     (async () => {
@@ -114,45 +119,27 @@ export default function Home() {
   }, [editorText]);
 
   
-
+  const [lastPDF, setLastPDF] = useState<string>( "../../public/starter.pdf");
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <main className="flex min-h-screen flex-col items-center justify-between p-32">
-        <nav className="w-full flex justify-between items-center mb-4">
-          <div className="flex">
-            <h1 className="font-bold text-9xl">AI.DE</h1>
-            <p className="pt-24 pl-5">
-              For the next generation of resume builders and math proof makers.
-            </p>
-          </div>
-          <ModeToggle />
-        </nav>
-        <div className="flex items-center justify-between w-full">
-          <div className="flex w-full h-full rounded-md overflow-hidden">
-            {" "}
-            <MonacoEditor editorText = {editorText} setEditorText={setEditorText} />
-          </div>
-            {!isLoading ?
-                <PDFViewer filePath={data} />
-              // <iframe src={data} width="100%" height="500px" style={{ border: 'none' }}></iframe>
-              : null}
+    <main className="flex flex-col items-center justify-between px-16">
+      <NavBar />
+      <hr></hr>
+      {/* <nav className="w-full flex justify-between items-center mb-4">
+        <div className="flex">
+          <h1 className="font-bold text-9xl">AI.DE</h1>
+          <p className="pt-24 pl-5">
+            For the next generation of resume builders and math proof makers.
+          </p>
         </div>
-        <div className="flex w-full h-full items-center justify-between py-10">
-          <div className="flex flex-col">
-            <div className="z-1 bg-[#e9c7f2] rounded-3xl">
-              <h1 className="text-5xl font-bold z-2 py-2 px-2 text-[#a803d2]">
-                Discover
-              </h1>
-            </div>
-            <h2>See the commands we offer</h2>
-            <ScrollBaby />
-          </div>
-          <div className="flex flex-col">
-            <h1>Search</h1>
-            <h2>Look for what piques your interest</h2>
-          </div>
+        <ModeToggle />
+      </nav> */}
+      <div className="flex items-center justify-between w-full">
+        <div className="flex w-full h-full rounded-md overflow-hidden">
+          {" "}
+          <MonacoEditor editorText = {editorText} setEditorText={setEditorText} />
         </div>
-      </main>
-    </ThemeProvider>
+          <PDFViewer filePath={lastPDF} />
+      </div>
+    </main>
   );
 }

@@ -5,14 +5,14 @@ export const latexTemplate = `
 % Package for encoding
 \\usepackage[utf8]{inputenc}
 
+\\usepackage{amsmath}
+
 % Package for English language
 \\usepackage[english]{babel}
 
 % Package for extended graphics
 \\usepackage{graphicx}
 
-% Package for better control over margins
-\\usepackage[margin=1in]{geometry}
 
 % Package for hyperlinks
 \\usepackage{hyperref}

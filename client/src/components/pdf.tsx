@@ -20,8 +20,8 @@ const PDFViewer = ({ filePath }: {filePath: string | undefined}) => {
       <Document
         file={starterPath}
         onLoadSuccess={onDocumentLoadSuccess}
-        className={"flex-col w-[1300px] h-[792px] overflow-auto border-2 border-gray-300 rounded-md"}
-      >
+        className={"flex-col w-8/12 h-[792px] overflow-auto justify-center items-center border-2 border-gray-300 rounded-md"}      
+        >
         {Array.from(new Array(numPages), (el, index) => (
           <Page key={`page_${index + 1}`} pageNumber={index + 1} renderTextLayer={false}/>
         ))}
@@ -32,7 +32,7 @@ const PDFViewer = ({ filePath }: {filePath: string | undefined}) => {
       <Document
         file={filePath}
         onLoadSuccess={onDocumentLoadSuccess}
-        className={"flex-col w-[1300px] h-[792px] overflow-auto border-2 border-gray-300 rounded-md"}
+        className={"flex-col w-8/12 h-[792px] justify-center items-center overflow-auto border-2 border-gray-300 rounded-md"}
       >
         {Array.from(new Array(numPages), (el, index) => (
           <Page key={`page_${index + 1}`} pageNumber={index + 1} renderTextLayer={false}/>
