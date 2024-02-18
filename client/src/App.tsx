@@ -1,22 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/mode-toggle";
 import MonacoEditor from "@/components/monaco-editor";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import PDFViewer from "@/components/pdf";
-
-
-
 import { ScrollBaby } from "@/components/ScrollBaby";
 
-import  editor from "monaco-editor";
 import { useMonaco } from "@monaco-editor/react";
-
-import {latexTemplate} from '@/components/defaultText';
-
-
 
 const value = /* set from `myEditor.getModel()`: */ `function hello() {
   alert('Hello world!');
@@ -26,8 +18,6 @@ export default function Home() {
   // const [pdfPath, setPdfPath] = useState("");
 
   const monaco = useMonaco();
-  const [editorText, setEditorText] = useState<string>('');
-=======
   const [editorText, setEditorText] = useState<string>("");
 
   const { isLoading, data } = useQuery({
@@ -67,7 +57,7 @@ export default function Home() {
         console.log("Editor text:", newEditorText);
         setEditorText(newEditorText);
 
-        var currentEditor = monaco?.editor.getModels()[0]; 
+        var currentEditor = monaco?.editor.getModels()[0];
         if (currentEditor) {
           const editOperation = {
             range: currentEditor.getFullModelRange(),
@@ -76,11 +66,6 @@ export default function Home() {
           };
           currentEditor.applyEdits([editOperation]);
         }
-
-        
-
-
-
       }
     }
   }, [editorText]);
@@ -105,13 +90,12 @@ export default function Home() {
               setEditorText={setEditorText}
             />
           </div>
-            {!isLoading ?
-                <PDFViewer filePath={data} />
-              // <iframe src={data} width="100%" height="500px" style={{ border: 'none' }}></iframe>
-              : <div></div>}
-            <div className="flex w-full items-center justify-between py-10">
-              <ScrollBaby />
-            </div>
+          {!isLoading ?
+            <PDFViewer filePath={data} />
+            // <iframe src={data} width="100%" height="500px" style={{ border: 'none' }}></iframe>
+            : <div></div>}
+          <div className="flex w-full items-center justify-between py-10">
+            <ScrollBaby />
           </div>
         </div>
       </main>
