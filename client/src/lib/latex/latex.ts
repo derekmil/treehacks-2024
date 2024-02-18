@@ -12,6 +12,7 @@ export const monarchLanguage: ILanguage = {
         root: [
             [/(\\[a-zA-Z]+\*?)(\{)/, ["keyword", "delimiter.bracket"]],
             [/(\\[a-zA-Z]+\*?)/, ["keyword"]],
+            [/(%.*)/, 'comment'],
         ]
     },
 }
