@@ -9,6 +9,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import PDFViewer from "@/components/pdf";
 
 import { ScrollBaby } from "@/components/ScrollBaby";
+import {latexTemplate} from '@/components/defaultText';
 
 
 const value = /* set from `myEditor.getModel()`: */ `function hello() {
@@ -17,7 +18,7 @@ const value = /* set from `myEditor.getModel()`: */ `function hello() {
 
 export default function Home() {
   // const [pdfPath, setPdfPath] = useState("");
-  const [editorText, setEditorText] = useState<string>('');
+  const [editorText, setEditorText] = useState<string>("");
   const { isLoading, data } = useQuery({
     queryKey: ['retrieve-latex', editorText],
     queryFn: async () => {
@@ -49,13 +50,12 @@ export default function Home() {
           </div>
           <ModeToggle />
         </nav>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between w-full">
           <div className="flex w-full h-full rounded-md overflow-hidden">
             {" "}
             <MonacoEditor setEditorText={setEditorText} />
           </div>
-
-          <div>
+          <div className="flex w-full h-full">
             {!isLoading ?
               <PDFViewer file={data} />
               // <iframe src={data} width="100%" height="500px" style={{ border: 'none' }}></iframe>
