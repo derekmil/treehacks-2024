@@ -20,6 +20,7 @@ import subprocess
 import secrets
 import string
 import together
+import requests
 
 load_dotenv(dotenv_path='.env')
 
@@ -74,6 +75,49 @@ def generate_random_string(length=8):
 #                       ROUTES                        #
 #                                                     #
 #######################################################
+import json
+
+@app.post('/api/ocr/')
+async def ocr(file: UploadFile = File(...)):
+    print("hello world")
+    # return {"filename": file.filename}
+    id = os.getenv('API_ID')
+    key = os.getenv('API_KEY')
+
+    try:
+        contents = file.file.read()
+    except Exception as e:
+        return {"error": str(e)}
+    
+    finally:
+        await file.close()
+    try:
+        r = requests.post("https://api.mathpix.com/v3/text",
+        files={"file": contents},
+        data={
+        "options_json": json.dumps({
+            "math_inline_delimiters": ["$", "$"],
+            "rm_spaces": True
+        })
+        },
+        headers={
+            "app_id": id,
+            "app_key": key,
+        }
+        )
+        # print("r", r.json())
+        response = r.json()['text']
+        print(response)
+    except Exception as e:
+        print("error", e)
+        return {"error": str(e)}
+    
+    return JSONResponse(
+        content={
+            "text": response
+        },
+        status_code=200
+    )
 
 @app.post('/ai/')
 async def ai_complete(request: aiSchema):
