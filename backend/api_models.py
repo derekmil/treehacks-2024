@@ -17,5 +17,5 @@ class LoginSchema(BaseModel):
 class EmailSchema(BaseModel):
     email:str
 
-# class LatexDocSchema(BaseModel):
-#     latex_code:UploadFile
+class LatexDocSchema(BaseModel):
+    latex: str

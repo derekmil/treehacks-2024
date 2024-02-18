@@ -1,55 +1,24 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Editor, { useMonaco } from "@monaco-editor/react";
 import { useTheme } from "../components/theme-provider"; // Adjust the import path
-import { useQuery, useMutation } from "@tanstack/react-query";
 import debounce from 'lodash/debounce';
-
 declare global {
   interface Window {
     monaco: typeof import("monaco-editor");
   }
 }
 
-const MonacoEditor = () => {
+const MonacoEditor = ({
+  setEditorText,
+}: {
+  setEditorText: (path: string) => void;
+}) => {
   const { theme } = useTheme();
   const monaco = useMonaco();
-  const [editorText, setEditorText] = useState<string | null>(null);
-  const [queryEditorText, setQueryEditorText] = useState<string | null>(null);
 
-  const saveText = useCallback(debounce((editor_text: string) => {
-    setQueryEditorText(editor_text);
+  const handleDebounceText = useCallback(debounce((value: any) => {
+    setEditorText(value);
   }, 1000), []);
-
-  useEffect(() => {
-    if (editorText) {
-      saveText(editorText);
-    }
-  }, [editorText]);
-  
-  const { isLoading, isError, data, error } = useQuery({
-    queryKey: ['retrieve-latex', queryEditorText],
-    queryFn: async () => {
-      const fileBlob = new Blob([queryEditorText!], { type: 'text/plain' });
-      const formData = new FormData();
-      formData.append("file", fileBlob, "latex-query.txt");
-
-      const response = await fetch('http://localhost:8000/api/render-latex/', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      return response.json();
-    }
-  });
-  if (isLoading) return "Loading...";
-  if (isError) return "An error has occurred: " + error.message;  
-  console.log(data);
-
-  //FUNCTIONALITY FOR AUTO COMPLETE SUGGESTION
-  // So if someone types in \resumeList or whatever we decide and click enter
 
   useEffect(() => {
     if (monaco) {
@@ -91,6 +60,8 @@ const MonacoEditor = () => {
       });
     }
   }, [monaco]);
+  //FUNCTIONALITY FOR AUTO COMPLETE SUGGESTION
+  // So if someone types in \resumeList or whatever we decide and click enter
 
   return (
     <Editor
@@ -102,7 +73,7 @@ const MonacoEditor = () => {
         // able to  can extend monaco functionalities if needed before mounting the editor
         // For example, registering completion item providers
       }}
-      onChange={(value) => setEditorText(value!)}
+      onChange={(value) => handleDebounceText(value!)}
     />
   );
 };

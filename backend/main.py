@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Depends, Response, File, UploadFile
+from fastapi import FastAPI, HTTPException, Depends, Response, File, UploadFile, Body
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.exceptions import HTTPException
@@ -14,7 +14,7 @@ from firebase_admin import credentials, auth
 from dotenv import load_dotenv
 import os
 import pyrebase
-from backend.api_models import SignUpSchema, LoginSchema, EmailSchema
+from backend.api_models import SignUpSchema, LoginSchema, EmailSchema, LatexDocSchema
 from sqlalchemy.exc import IntegrityError
 import subprocess
 import secrets
@@ -76,7 +76,10 @@ def generate_random_string(length=8):
 
 
 @app.post("/api/render-latex/")
-async def read_item(file: Annotated[bytes, File()]):
+async def render_latex(request: LatexDocSchema):
+    latex = request.latex
+    unsanitized_latex_content = latex.replace('\\\\', '\\')
+
     tag = generate_random_string()
     root_dir = "/Users/derekmiller/Documents/sideproj/treehacks-2024"
     render_dir = f"backend/render_dir"
@@ -84,22 +87,21 @@ async def read_item(file: Annotated[bytes, File()]):
 
     os.makedirs(f"{root_dir}/{render_dir}", exist_ok=True)
     file_path = os.path.join(f"{root_dir}/{render_dir}", f"{tag}.tex")
-    with open(file_path, "wb+") as file_object:
-        file_object.write(file)
-
+    with open(file_path, "w") as file_object:
+        file_object.write(unsanitized_latex_content)
     try:
         compile_command = [
             "docker", "run", "--rm",
             "-v", f"{root_dir}/{render_dir}:/workdir",
-            "texlive/texlive", "pdflatex",
-            f"{tag}.tex"
+            "texlive/texlive", "pdflatex", f"{tag}.tex"
         ]
-
         result = subprocess.run(compile_command, cwd=f"{root_dir}/{render_dir}/", capture_output=True, text=True)
         if result.returncode != 0:
             raise HTTPException(status_code=501, detail=result.stderr)
+# docker run --rm -v /Users/derekmiller/Documents/sideproj/treehacks-2024/backend/render_dir:/workdir texlive/texlive pdflatex test.tex
 
     except Exception as e:
+        print("something", e)
         raise HTTPException(status_code=500, detail=str(e))
     response = FileResponse(f"{root_dir}/{render_dir}/{tag}.pdf")
     
