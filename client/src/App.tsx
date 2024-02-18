@@ -7,8 +7,15 @@ import MonacoEditor from "@/components/monaco-editor";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import PDFViewer from "@/components/pdf";
 
+
+
 import { ScrollBaby } from "@/components/ScrollBaby";
+
+import  editor from "monaco-editor";
+import { useMonaco } from "@monaco-editor/react";
+
 import {latexTemplate} from '@/components/defaultText';
+
 
 
 const value = /* set from `myEditor.getModel()`: */ `function hello() {
@@ -17,7 +24,12 @@ const value = /* set from `myEditor.getModel()`: */ `function hello() {
 
 export default function Home() {
   // const [pdfPath, setPdfPath] = useState("");
+
+  const monaco = useMonaco();
+  const [editorText, setEditorText] = useState<string>('');
+=======
   const [editorText, setEditorText] = useState<string>("");
+
   const { isLoading, data } = useQuery({
     queryKey: ['retrieve-latex', editorText],
     queryFn: async () => {
@@ -37,6 +49,42 @@ export default function Home() {
     enabled: !!editorText, // This ensures the query doesn't run until editorText is not empty
   });
 
+  useEffect(() => {
+
+    const keyword = "/ai";
+
+    if (editorText.includes(keyword)) {
+      console.log("found keyword");
+      // Get the line count
+      const lines = editorText.split("\n");
+      const lineIndex = lines.findIndex(line => line.includes(keyword));
+      // Get the content of the last line
+      if (lineIndex !== -1) { // Check if keyword is found
+        // Get the content of the line
+        const lineContent = lines[lineIndex];
+        console.log("Line containing keyword:", lineContent);
+        const newEditorText = editorText.replace(keyword, "Submitted");
+        console.log("Editor text:", newEditorText);
+        setEditorText(newEditorText);
+
+        var currentEditor = monaco?.editor.getModels()[0]; 
+        if (currentEditor) {
+          const editOperation = {
+            range: currentEditor.getFullModelRange(),
+            text: newEditorText,
+            forceMoveMarkers: true,
+          };
+          currentEditor.applyEdits([editOperation]);
+        }
+
+        
+
+
+
+      }
+    }
+  }, [editorText]);
+
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <main className="flex min-h-screen flex-col items-center justify-between p-32">
@@ -52,7 +100,10 @@ export default function Home() {
         <div className="flex items-center justify-between w-full">
           <div className="flex w-full h-full rounded-md overflow-hidden">
             {" "}
-            <MonacoEditor setEditorText={setEditorText} />
+            <MonacoEditor
+              editorText={value}
+              setEditorText={setEditorText}
+            />
           </div>
             {!isLoading ?
                 <PDFViewer filePath={data} />
