@@ -72,7 +72,7 @@ export default function Home() {
             <ScrollBaby />
           </div>
         </div>
-      </div>
+      </main>
     </ThemeProvider>
   );
 }
