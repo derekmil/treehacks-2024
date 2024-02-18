@@ -1,6 +1,5 @@
 "use client";
 
-
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -55,12 +54,10 @@ export default function Home() {
             {" "}
             <MonacoEditor setEditorText={setEditorText} />
           </div>
-          <div className="flex w-full h-full">
             {!isLoading ?
-              <PDFViewer file={data} />
+                <PDFViewer filePath={data} />
               // <iframe src={data} width="100%" height="500px" style={{ border: 'none' }}></iframe>
               : null}
-          </div>
         </div>
         <div className="flex w-full h-full items-center justify-between py-10">
           <div className="flex flex-col">

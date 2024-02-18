@@ -315,7 +315,7 @@ const MonacoEditor = ({
 
   return (
     <Editor
-      height="500px"
+      height="792px"
       defaultLanguage="latex"
       defaultValue={latexTemplate}
       theme={theme === "dark" ? "vs-dark" : "light"} // Use monaco's built-in themes as fallback
