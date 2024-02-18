@@ -18,6 +18,10 @@ export default function Home() {
   // const [pdfPath, setPdfPath] = useState("");
 
   const monaco = useMonaco();
+
+  //const [editorText, setEditorText] = useState<string>('');
+
+
   const [editorText, setEditorText] = useState<string>("");
 
   const { isLoading, data } = useQuery({
